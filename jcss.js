@@ -237,12 +237,26 @@
 				':input': function(list) {
 					return each(list, function() { return /^input|button|textarea|select$/i.test(this.nodeName); } );
 				},
-				':radio': function(list) { return input(list, 'radio'); },
-				':checkbox': function(list) { return input(list, 'checkbox'); },
-				':text': function(list) { return input(list, 'text'); },
-				':image': function(list) { return input(list, 'image'); },
-				':submit': function(list) { return input(list, 'submit'); },
-				':lang': function(list, value) { return each(list, function() { return (this.getAttribute('lang') || this.lang) == value; }); },
+				':radio': function(list) { 
+					return input(list, 'radio'); 
+				},
+				':checkbox': function(list) { 
+					return input(list, 'checkbox'); 
+				},
+				':text': function(list) { 
+					return input(list, 'text'); 
+				},
+				':image': function(list) {
+					return input(list, 'image'); 
+				},
+				':submit': function(list) {
+					return input(list, 'submit'); 
+				},
+				':lang': function(list, value) { 
+					return each(list, function() { 
+						return (this.getAttribute('lang') || this.lang) == value; 
+					}); 
+				},
 				
 				/**
 				 * @TODO implementation is incorrect
