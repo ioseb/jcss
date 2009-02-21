@@ -1,5 +1,5 @@
 /**
- * jCSS - Library Agnostic CSS Selector Engine
+ * jCSS - Library Agnostic CSS Selector Engine - v0.2
  *
  * Copyright (c) 2009 Ioseb Dzmanashvili (http://www.code.ge)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
