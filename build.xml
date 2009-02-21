@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jCSS" default="core.build" basedir=".">
+	
+	<property name="src" value="." />
+	<property name="build" value="." />
+	<property name="yuicompressor" value="tools/yuicompressor.jar" />
+	
+	<target name="core.build">
+		<java fork="true" jar="${yuicompressor}">
+			<arg line="-o ${build}/jcss-min.js ${build}/jcss.js" />
+		</java>
+	</target>
+	
+</project>
