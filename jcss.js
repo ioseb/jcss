@@ -76,6 +76,10 @@
 					}
 					return nodes;
 				},
+				
+				/**
+				 * @TODO rewrite "nt-child" completely, it's very slow
+				 */
 				':nth-child': function(list, value) {
 					
 					function filter(arr, step, nodes) {
@@ -239,6 +243,10 @@
 				':image': function(list) { return input(list, 'image'); },
 				':submit': function(list) { return input(list, 'submit'); },
 				':lang': function(list, value) { return each(list, function() { return (this.getAttribute('lang') || this.lang) == value; }); },
+				
+				/**
+				 * @TODO implementation is incorrect
+				 */
 				':root': function(list) { return each(list, function() { return this.nodeName == 'HTML'; }); }
 			};
 			
@@ -337,6 +345,9 @@
 			if (isID) ID = token.replace(/\\/g, '') + temp.join('');
 			if (isClass) CLASS = token + temp.join('');
 			
+			/**
+			 * @TODO remove duplicated code
+			 */
 			function atts (el) {
 				var i = attributes.length;
 				if (i > 0) {
@@ -367,6 +378,9 @@
 					}
 				} else if (!relation || relation == '>') {
 					
+					/**
+					 * @TODO change complex condition and remove browser sniffing
+					 */
 					if (isClass && !window.opera && !/^\w+\.\w+$/.test(CLASS) && !/[^-\w\.\:\\\[\]]/.test(CLASS) && !/[A-Z]/.test(CLASS)
 					 		&& document.getElementsByClassName 
 								&& document.documentElement.getElementsByClassName) {
@@ -570,9 +584,9 @@
 	
 			return r1.compareBoundaryPoints(Range.START_TO_END, r2);
 	
-		};
+		},
 		
-		var querySelectorAll = function(query) {
+		querySelectorAll = function(query) {
 			var orig = query;
 			var queries = getQueries(query);
 			
@@ -637,7 +651,10 @@
 		};
 		
 		var result = [];
-	
+		
+		/**
+		 * @TODO remove "param" checking
+		 */
 		if (document.querySelectorAll && !/\bparam\b/.test(query)) {
 			try {
 				var contexts = context.length ? context : [context];
