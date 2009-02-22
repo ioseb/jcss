@@ -14,7 +14,7 @@
 			context = context || document;
 		}
 		
-		if (context.nodeType && context.nodeType !== 1 && context.nodeType !== 9) {
+		if (context.nodeType && context.nodeType != 1 && context.nodeType != 9) {
 			return [];
 		}
 		
@@ -209,10 +209,14 @@
 					});
 				},
 				':contains': function(list, value) {
-					return each(list, function() { return (this.innerText || this.textContent || '').indexOf(value) > -1; });
+					return each(list, function() { 
+						return (this.innerText || this.textContent || '').indexOf(value) > -1; 
+					});
 				},
 				':header': function(list, value) {
-					return each(list, function() { return /h[1-6]/i.test(this.nodeName); });
+					return each(list, function() { 
+						return /h[1-6]/i.test(this.nodeName); 
+					});
 				},
 				':eq': function(list, value) {
 					return !isNaN(value) && list[value] ? [list[value]] : [];
@@ -232,10 +236,14 @@
 					return nodes;
 				},
 				':has': function(list, value) {
-					return each(list, function() { return jCSS(value, this).length > 0; });
+					return each(list, function() { 
+						return jCSS(value, this).length > 0; 
+					});
 				},
 				':input': function(list) {
-					return each(list, function() { return /^input|button|textarea|select$/i.test(this.nodeName); } );
+					return each(list, function() { 
+						return /^input|button|textarea|select$/i.test(this.nodeName); 
+					});
 				},
 				':radio': function(list) { 
 					return input(list, 'radio'); 
@@ -278,21 +286,29 @@
 			
 			return {
 				'=': function(att, value) {
-					return function() {	return value ? attVal(this, att) === value : !attVal(this, att); };
+					return function() {	
+						return value ? attVal(this, att) == value : !attVal(this, att); 
+					};
 				},
 				'*=': function(att, value) {
-					return function() { return attVal(this, att).indexOf(value) > -1; }
+					return function() { 
+						return attVal(this, att).indexOf(value) > -1; 
+					}
 				},
 				'!=': function(att, value) {
-					return function() { return value ? attVal(this, att) !== value : !!attVal(this, att); }
+					return function() { 
+						return value ? attVal(this, att) != value : !!attVal(this, att); 
+					}
 				},
 				'^=': function(att, value) {
-					return function() { return attVal(this, att).indexOf(value) == 0; }
+					return function() { 
+						return attVal(this, att).indexOf(value) == 0; 
+					}
 				},
 				'$=': function(att, value) {
 					return function() { 
 						var val = attVal(this, att);
-						return val.substr(val.length - value.length) === value; 
+						return val.substr(val.length - value.length) == value; 
 					}
 				},
 				'~=': function(att, value) {
@@ -301,20 +317,23 @@
 					}
 				},
 				'|=': function(att, value) {
-					return function() { return new RegExp('(^|-)' + value + '(-|$)').test(attVal(this, att)); }
+					return function() { 
+						return new RegExp('(^|-)' + value + '(-|$)').test(attVal(this, att)); 
+					}
 				},
 				'': function(att, value) {
-					return function() { return !!attVal(this, att); }
+					return function() { 
+						return !!attVal(this, att); 
+					}
 				}
 			};
 			
 		}();
 		
-		function getTag(tag, origQuery) {
+		function getTag(token) {
 	
-			var token      = tag,
-				regex1     = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,      //match whole token
-			    regex2     = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
+			var regex1     = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,      //match whole token
+				regex2     = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
 			    regex3     = /(\:[-\w]+)(?:\((.*?)\))?$/,                     //match pseudo classes at the end of the string
 				matches    = regex1.exec(token),
 				token      = (matches[4] || '') + (matches[5] || ''); 
