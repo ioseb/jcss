@@ -2,6 +2,12 @@ Library agnostic pure JavaScript CSS Selector Engine.
  
 Documentation:
   http://wiki.github.com/ioseb/jcss
+
+Unit Test Results
+  http://www.code.ge/projects/jcss/test
+  
+SlickSpeed Test
+  http://www.code.ge/jcss-test/slickspeed
  
 Testing and Benchmarking:
  - jCSS inlcudes adjusted version of the jQuery selector test suite, to run tests just open test/index.html file in your browser.
