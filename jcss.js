@@ -221,7 +221,7 @@
 				},
 				':contains': function(list, value) {
 					return each(list, function() { 
-						return (this.innerText || this.textContent || '').indexOf(value) > -1; 
+						return inArray((this.innerText || this.textContent || ''), value) > -1; 
 					});
 				},
 				':header': function(list, value) {
@@ -303,7 +303,7 @@
 				},
 				'*=': function(att, value) {
 					return function() { 
-						return attVal(this, att).indexOf(value) > -1; 
+						return inArray(attVal(this, att), value) > -1; 
 					};
 				},
 				'!=': function(att, value) {
@@ -313,7 +313,7 @@
 				},
 				'^=': function(att, value) {
 					return function() { 
-						return attVal(this, att).indexOf(value) == 0; 
+						return inArray(attVal(this, att), value) == 0; 
 					};
 				},
 				'$=': function(att, value) {
@@ -634,7 +634,7 @@
 		
 		querySelectorAll = function(query) {
 
-			var queries = getQueries(query);
+			var result = [], queries = getQueries(query);
 			
 			for (var i = 0; query = queries[i++];) {
 	
