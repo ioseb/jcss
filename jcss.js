@@ -7,6 +7,22 @@
 (function() {
 	
 	var jCSS = function(query, context) {
+		
+		if (typeof query == 'string') {
+			
+			var regexs = [
+				/\[(?!.*\])/g,
+				/\((?!.*\))/g,
+				/<|{|}|<.*?>|\(\s*\)/
+			];
+		
+			for (var i = 0, regex; regex = regexs[i++];) {
+				if (regex.test(query)) {
+					 throw 'Syntax error. Invalid Query: ' + query; 
+				}
+			}
+			
+		}
 			
 		if (typeof context == 'string') {
 			context = jCSS(context);

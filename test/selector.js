@@ -6,12 +6,12 @@ module("selector");
 	
 });*/
 
-/*test("broken", function() {
-	expect(9);
+test("broken", function() {
+	expect(6);
 	
 	function broken(name, selector) {
 		try {
-			jQuery(selector);
+			jCSS(selector);
 		} catch(e){
 			ok(  typeof e === "string" && e.indexOf("Syntax error") >= 0,
 				name + ": " + selector );
@@ -19,16 +19,13 @@ module("selector");
 	}
 	
 	broken( "Broken Selector", "[", [] );
-	broken( "Broken Selector", "]", [] );
 	broken( "Broken Selector", "(", [] );
-	broken( "Broken Selector", ")", [] );
-	broken( "Broken Selector", "{", [] );
 	broken( "Broken Selector", "<", [] );
 	broken( "Broken Selector", "()", [] );
 	broken( "Broken Selector", "<>", [] );
 	broken( "Broken Selector", "{}", [] );
 	
-});*/
+});
 
 test("element", function() {
 	expect(18);
