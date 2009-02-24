@@ -276,11 +276,9 @@
 						return (this.getAttribute('lang') || this.lang) == value; 
 					}); 
 				},
-				
-				/**
-				 * @TODO implementation is incorrect
-				 */
-				':root': function(list) { return each(list, function() { return this.nodeName == 'HTML'; }); }
+				':root': function() {
+					return [document.documentElement];
+				}
 			};
 			
 		}();
