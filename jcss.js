@@ -197,7 +197,9 @@
 					});
 				},
 				':empty': function(list, value) {
-					return list;
+					return each(list, function() {
+						return this.childNodes.length == 0;
+					});
 				},
 				':disabled': function(list, value) {
 					return each(list, function() { 
