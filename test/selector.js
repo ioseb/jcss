@@ -6,6 +6,30 @@ module("selector");
 	
 });*/
 
+/*test("broken", function() {
+	expect(9);
+	
+	function broken(name, selector) {
+		try {
+			jQuery(selector);
+		} catch(e){
+			ok(  typeof e === "string" && e.indexOf("Syntax error") >= 0,
+				name + ": " + selector );
+		}
+	}
+	
+	broken( "Broken Selector", "[", [] );
+	broken( "Broken Selector", "]", [] );
+	broken( "Broken Selector", "(", [] );
+	broken( "Broken Selector", ")", [] );
+	broken( "Broken Selector", "{", [] );
+	broken( "Broken Selector", "<", [] );
+	broken( "Broken Selector", "()", [] );
+	broken( "Broken Selector", "<>", [] );
+	broken( "Broken Selector", "{}", [] );
+	
+});*/
+
 test("element", function() {
 	expect(18);
 	reset();

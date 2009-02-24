@@ -5,7 +5,7 @@
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
 */
 (function() {
-
+	
 	var jCSS = function(query, context) {
 			
 		if (typeof context == 'string') {
@@ -83,18 +83,18 @@
 				':nth-child': function(list, value) {
 					
 					function filter(arr, step, nodes) {
-					    var start = 0, temp = [], result = [], el;
+						var start = 0, temp = [], result = [], el;
 						while (el = arr[start]) {
 							for (var i = 0, len = nodes.length; i < len; i++) {
 								if (el === nodes[i]) {
-						            result.push(el);
+									result.push(el);
 									nodes.splice(0, i);
 									break;
-						        }
+								}
 							}
 							start += step;
 						}
-					    return result;
+						return result;
 					}
 					
 					value = value.replace(/\s+/g, '')
@@ -134,7 +134,7 @@
 					}
 					
 					if (chunk > 0) {
-						for (var i in groups) {
+						for (i in groups) {
 							for (var node = parents[i].firstChild, children = []; node; node = node.nextSibling) {
 								if (node.nodeType == 1) children.push(node);
 							}
@@ -144,8 +144,8 @@
 					}
 					
 					if (!isNaN(value)) {
-						var nodes = [], value = parseInt(value) - 1;
-						for (var i in groups) {
+						value = parseInt(value) - 1;
+						for (i in groups) {
 							if (groups[i][value]) {
 								nodes.push(groups[i][value]); 
 							}
@@ -166,11 +166,15 @@
 					return list.length ? [list[list.length - 1]] : [];
 				},
 				':even': function(list) {
-					for (var i = 0, nodes = [], node; node = list[i]; i+=2) { nodes.push(node); }
+					for (var i = 0, nodes = [], node; node = list[i]; i+=2) { 
+						nodes.push(node); 
+					}
 					return nodes;
 				},
 				':odd': function(list) {
-					for (var i = 1, nodes = [], node; node = list[i]; i+=2) { nodes.push(node); }
+					for (var i = 1, nodes = [], node; node = list[i]; i+=2) { 
+						nodes.push(node); 
+					}
 					return nodes;
 				},
 				':not': function(list, value) {
@@ -181,22 +185,29 @@
 					return list;
 				},
 				':selected': function(list, value) {
-					return each(list, function() { 
+					return each(list, function() {
+						//Safari fix, trick from jQuery
 						this.parentNode.selectedIndex;
 						return this.selected == true; 
 					});
 				},
 				':checked': function(list, value) {
-					return each(list, function() { return this.checked === true; });
+					return each(list, function() { 
+						return this.checked === true; 
+					});
 				},
 				':empty': function(list, value) {
 					return list;
 				},
 				':disabled': function(list, value) {
-					return each(list, function() { return this.disabled == true; });
+					return each(list, function() { 
+						return this.disabled == true; 
+					});
 				},
 				':enabled': function(list, value) {
-					return each(list, function() { return this.disabled == false; });
+					return each(list, function() { 
+						return this.disabled == false; 
+					});
 				},
 				':visible': function(list, value) {
 					return each(list, function() {
@@ -293,38 +304,38 @@
 				'*=': function(att, value) {
 					return function() { 
 						return attVal(this, att).indexOf(value) > -1; 
-					}
+					};
 				},
 				'!=': function(att, value) {
 					return function() { 
 						return value ? attVal(this, att) != value : !!attVal(this, att); 
-					}
+					};
 				},
 				'^=': function(att, value) {
 					return function() { 
 						return attVal(this, att).indexOf(value) == 0; 
-					}
+					};
 				},
 				'$=': function(att, value) {
 					return function() { 
 						var val = attVal(this, att);
 						return val.substr(val.length - value.length) == value; 
-					}
+					};
 				},
 				'~=': function(att, value) {
 					return function() {
 						return new RegExp('(^|\\s)' + value + '(\\s|$)').test(attVal(this, att)); 
-					}
+					};
 				},
 				'|=': function(att, value) {
 					return function() { 
 						return new RegExp('(^|-)' + value + '(-|$)').test(attVal(this, att)); 
-					}
+					};
 				},
 				'': function(att, value) {
 					return function() { 
 						return !!attVal(this, att); 
-					}
+					};
 				}
 			};
 			
@@ -332,40 +343,41 @@
 		
 		function getTag(token) {
 	
-			var regex1     = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,      //match whole token
-				regex2     = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
-			    regex3     = /(\:[-\w]+)(?:\((.*?)\))?$/,                     //match pseudo classes at the end of the string
-				matches    = regex1.exec(token),
-				token      = (matches[4] || '') + (matches[5] || ''); 
+			var regex1	 = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	  //match whole token
+				regex2	 = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
+				regex3	 = /(\:[-\w]+)(?:\((.*?)\))?$/,					 //match pseudo classes at the end of the string
+				matches	= regex1.exec(token);
+			
+			token = (matches[4] || '') + (matches[5] || ''); 
 			
 			var relation   = matches[1] || '',
 				name 	   = (matches[2] || '*').toUpperCase(),
 				isID 	   = matches[3] == '#',
 				ID   	   = null,
-				isClass    = matches[3] == '.',
-				CLASS      = null,
+				isClass	= matches[3] == '.',
+				CLASS	  = null,
 				attributes = [],
-				pseudos    = [];
+				pseudos	= [];
 			
 			while (matches = regex2.exec(token)) {
-			    token = RegExp.leftContext || '';
-			    var regex = /\[\s*(\w+)\s*(?:(!|\*|\^|\$|~|\||)(=)\s*(.*?\]?))?\s*\]/,
-			        att   = matches[0];
-			    while(matches = regex.exec(att)) {
-			        att = RegExp.rightContext;
+				token = RegExp.leftContext || '';
+				var regex = /\[\s*(\w+)\s*(?:(!|\*|\^|\$|~|\||)(=)\s*(.*?\]?))?\s*\]/,
+					att   = matches[0];
+				while(matches = regex.exec(att)) {
+					att = RegExp.rightContext;
 					if (matches.length == 5) {
 						var fn = (matches[2] || '') + (matches[3] || '');	
 						if (fn !== null && (fn = attfn[fn])) {
 							attributes.push(fn(matches[1], matches[4] || ''));
 						}
 					}
-			    }
+				}
 			}
 			
 			var temp = [];
 			
 			while (matches = regex3.exec(token)) {
-			    token = RegExp.leftContext || '';
+				token = RegExp.leftContext || '';
 				if (matches.length == 3) {
 					if (!pseudo[matches[1]]) {
 						temp.push(matches[1]);
@@ -418,7 +430,7 @@
 					 		&& document.getElementsByClassName 
 								&& document.documentElement.getElementsByClassName) {
 						
-						for (var i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '').toLowerCase()), node; node = items[i++];) {
+						for (i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '').toLowerCase()), node; node = items[i++];) {
 							if (name == '*' || node.nodeName == name && atts(node)) {
 								nodes.push(node);							
 							}
@@ -432,7 +444,7 @@
 						
 						var all = name === '*';
 						
-						for (var i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
+						for (i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
 							if (all) {
 								if (isClass) {
 									if (node.className && atts(node)) {
@@ -457,12 +469,12 @@
 				pseudo: function(list) {
 					if (pseudos.length) {
 						pseudos = pseudos.reverse();
-						var temp = [];
+						temp = [];
 						for (var i = 0, v; v = pseudos[i++];) {
 							temp.push(v);
 						}
-						for (var i = 0, v; v = temp[i++];) {
-							list = pseudo['' + v[1]](list, '' + v[2] || null);
+						for (i = 0, v; v = temp[i++];) {
+							list = pseudo['' + v[1]](list, '' + (v[2] || null));
 						}
 					}				
 					return list;
@@ -488,7 +500,7 @@
 					}
 					var result = this.pseudo(nodes);
 					if (pseudos.length) {
-						for (var i = 0, idx, node; node = result[i++];) {
+						for (var i = 0, idx; node = result[i++];) {
 							if ((idx = inArray(nodes, node)) > -1) {
 								nodes.splice(idx, 1);
 							}
@@ -509,7 +521,8 @@
 					return this.pseudo(nodes);
 				},
 				elements: function(context, depth) {
-					var el, result = [], depth = depth || 0;
+					var el, result = [];
+					depth = depth || 0;
 					if (isID && depth == 0) {
 						result = getNodes(context);
 					} else {
@@ -551,12 +564,12 @@
 						 .replace(/((\[)\s*|\s*(\]))/g, '$2$3')
 						 .replace(/\s*(=|\$|\^|!|\*=)\s*/g, '$1')
 						 .replace(/table\s+tr\s+td/g, 'td')
-						 .replace(/tr\s+td/g, 'td')
+						 .replace(/tr\s+td/g, 'td');
 	
 			var expr = [];
 			
 			while (query != (query = query.replace(/\([^\(\)]*\)/g, function(match) {
-			    return '#__' + (expr.push(match.replace(/\s*,\s*/g, ',')) - 1); 
+				return '#__' + (expr.push(match.replace(/\s*,\s*/g, ',')) - 1); 
 			})));
 	
 			query = query.replace(/\s*,\s*/g, ':::')
@@ -564,7 +577,7 @@
 						 .replace(/@*(>|~|\+)@*([^\d=])/g, '@@@$1$2');
 	
 			for (var i = expr.length - 1, token; token = expr[i--];) {
-			    query = query.replace(new RegExp('#__' + (i + 1), 'g'), token);
+				query = query.replace(new RegExp('#__' + (i + 1), 'g'), token);
 			}
 			
 			return query;
@@ -620,10 +633,10 @@
 		},
 		
 		querySelectorAll = function(query) {
-			var orig = query;
+
 			var queries = getQueries(query);
 			
-			for (var i = 0, query; query = queries[i++];) {
+			for (var i = 0; query = queries[i++];) {
 	
 				var tokens, contexts = context && context.length ? context : [context];
 	
@@ -639,8 +652,8 @@
 	
 				for (var j = 0, token; token = tokens[j++];) {
 					
-					var temp = [], current = getTag(token, orig), next;
-					
+					var temp = [], current = getTag(token), next;
+
 					for (var k = 0, parent; parent = contexts[k++];) {
 						Array.prototype.push.apply(temp, current.elements(parent, j - 1));
 					}
@@ -648,14 +661,14 @@
 					if (temp.length > 1 && tokens.length > 1 && j < tokens.length) {
 						if (tokens[j]) {
 							if (!(next = getTag(tokens[j])).relation) {
-								for (var k = 1; k < temp.length; k++) {
+								for (k = 1; k < temp.length; k++) {
 									if (contains(temp[k - 1], temp[k])) {
 										temp.splice(k--, 1);
 									}
 								}
 							} else if (next.relation == '~') {
-								var node, parent, nodes = [], parents = [];
-								for (var i = 0; node = temp[i++];) {
+								var node, nodes = [], parents = [];
+								for (i = 0; node = temp[i++];) {
 									if (inArray(parents, (parent = node.parentNode)) == -1) {
 										parents.push(parent);
 										nodes.push(node);
@@ -697,7 +710,7 @@
 						nodes = Array.prototype.slice.call(nodes);
 						Array.prototype.push.apply(result, nodes);
 					} catch(ex) {
-						for (i = 0, len = nodes.length; i < len;) {
+						for (var i = 0, len = nodes.length; i < len;) {
 							result.push(nodes[i++]);
 						}
 					}
