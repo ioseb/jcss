@@ -287,12 +287,12 @@
 		
 		var attfn = function() {
 			
-			var attVal = function(el, att) {
-				return el.getAttribute(att, 2) || el[attName(att)] || '';
-			};
-			
 			var attName = function(att) {
 				return {'class': 'className', 'for': 'htmlFor'}[att] || att;
+			};
+			
+			var attVal = function(el, att) {
+				return el.getAttribute(att, 2) || el[attName(att)] || '';
 			};
 			
 			return {
@@ -343,10 +343,10 @@
 		
 		function getTag(token) {
 	
-			var regex1	 = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	  //match whole token
+			var regex1	 = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	    //match whole token
 				regex2	 = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
-				regex3	 = /(\:[-\w]+)(?:\((.*?)\))?$/,					 //match pseudo classes at the end of the string
-				matches	= regex1.exec(token);
+				regex3	 = /(\:[-\w]+)(?:\((.*?)\))?$/,					    //match pseudo classes at the end of the string
+				matches	 = regex1.exec(token);
 			
 			token = (matches[4] || '') + (matches[5] || ''); 
 			
@@ -354,10 +354,10 @@
 				name 	   = (matches[2] || '*').toUpperCase(),
 				isID 	   = matches[3] == '#',
 				ID   	   = null,
-				isClass	= matches[3] == '.',
-				CLASS	  = null,
+				isClass	   = matches[3] == '.',
+				CLASS	   = null,
 				attributes = [],
-				pseudos	= [];
+				pseudos	   = [];
 			
 			while (matches = regex2.exec(token)) {
 				token = RegExp.leftContext || '';
@@ -444,7 +444,7 @@
 						
 						var all = name === '*';
 						
-						for (i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
+						for (var i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
 							if (all) {
 								if (isClass) {
 									if (node.className && atts(node)) {
