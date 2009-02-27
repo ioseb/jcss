@@ -372,7 +372,7 @@
 				ID   	   = null,
 				isClass	   = matches[3] == '.',
 				CLASS	   = null,
-				attributes = [],
+				filters	   = [],
 				pseudos	   = [];
 			
 			while (matches = regex2.exec(token)) {
@@ -384,7 +384,7 @@
 					if (matches.length == 5) {
 						var fn = (matches[2] || '') + (matches[3] || '');	
 						if (fn !== null && (fn = attfn[fn])) {
-							attributes.push(fn(matches[1], matches[4] || ''));
+							filters.push(fn(matches[1], matches[4] || ''));
 						}
 					}
 				}
@@ -406,11 +406,11 @@
 			if (isID) ID = token.replace(/\\/g, '') + temp.join('');
 			if (isClass) CLASS = token + temp.join('');
 			
-			function atts (el) {
-				var i = attributes.length;
+			function filter(el) {
+				var i = filters.length;
 				if (i > 0) {
 					while (i--) {
-						if (!attributes[i].call(el)) return false;
+						if (!filters[i].call(el)) return false;
 					}
 				}
 				return true;
@@ -444,7 +444,7 @@
 								&& document.documentElement.getElementsByClassName) {
 						
 						for (i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '').toLowerCase()), node; node = items[i++];) {
-							if (name == '*' || node.nodeName == name && atts(node)) {
+							if (name == '*' || node.nodeName == name && filter(node)) {
 								nodes.push(node);							
 							}
 						}
@@ -452,7 +452,7 @@
 					} else {
 						
 						if (isClass) {
-							attributes.push(attfn['~=']('class', CLASS));
+							filters.push(attfn['~=']('class', CLASS));
 						}
 						
 						var all = name === '*';
@@ -460,14 +460,14 @@
 						for (var i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
 							if (all) {
 								if (isClass) {
-									if (node.className && atts(node)) {
+									if (node.className && filter(node)) {
 										nodes.push(node);
 									}
 								} else {
-									if (node.nodeType == 1 && atts(node)) nodes.push(node);
+									if (node.nodeType == 1 && filter(node)) nodes.push(node);
 								}
 							} else {
-								if (atts(node)) nodes.push(node);
+								if (filter(node)) nodes.push(node);
 							}
 						}
 						
@@ -492,16 +492,13 @@
 					}				
 					return list;
 				},
-				atts: function(el) {
-					return atts(el);
-				},
 				not: function(list) {
 					for (var i = 0, nodes = [], node; node = list[i++];) {
-						if (name == '*' && (!attributes.length || !this.atts(node))) {
+						if (name == '*' && (!filters.length || !filter(node))) {
 							nodes.push(node);
-						} else if (name != '*' && attributes.length && node.nodeName == name && !this.atts(node)) {
+						} else if (name != '*' && filters.length && node.nodeName == name && !filter(node)) {
 							nodes.push(node);
-						} else if (name != '*' && !attributes.length && node.nodeName != name) {
+						} else if (name != '*' && !filters.length && node.nodeName != name) {
 							nodes.push(node);
 						} else if (name != '*' && node.nodeName != name) {
 							nodes.push(node);
@@ -519,9 +516,9 @@
 				},
 				filter: function(list) {
 					for (var i = 0, nodes = [], node; node = list[i++];) {
-						if (name == '*' && (this.atts(node))) {
+						if (name == '*' && (filter(node))) {
 							nodes.push(node);
-						} else if (node.nodeName == name && this.atts(node)) {
+						} else if (node.nodeName == name && filter(node)) {
 							nodes.push(node);
 						} else if (node.nodeName == name) {
 							nodes.push(node);
@@ -540,7 +537,7 @@
 					} else if (relation == '+') {
 						for (var o = context.nextSibling; o; o = o.nextSibling) {
 							if (o.nodeType == 1) {
-							 	if (o.nodeName == name && this.atts(o)) {
+							 	if (o.nodeName == name && filter(o)) {
 									result.push(o);
 								}
 								break;
@@ -549,7 +546,7 @@
 					} else if (relation == '~') {
 						for (var o = context.nextSibling; o; o = o.nextSibling) {
 							if (o.nodeType == 1) {
-								if (o.nodeName == name && this.atts(o)) {
+								if (o.nodeName == name && filter(o)) {
 									result.push(o);
 								}
 							}							
