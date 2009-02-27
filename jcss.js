@@ -366,14 +366,14 @@
 			
 			token = (matches[4] || '') + (matches[5] || ''); 
 			
-			var relation   = matches[1] || '',
-				name 	   = (matches[2] || '*').toUpperCase(),
-				isID 	   = matches[3] == '#',
-				ID   	   = null,
-				isClass	   = matches[3] == '.',
-				CLASS	   = null,
-				filters	   = [],
-				pseudos	   = [];
+			var relation = matches[1] || '',
+				name 	 = (matches[2] || '*').toUpperCase(),
+				isID 	 = matches[3] == '#',
+				ID   	 = null,
+				isClass	 = matches[3] == '.',
+				CLASS	 = null,
+				filters	 = [],
+				pseudos	 = [];
 			
 			while (matches = regex2.exec(token)) {
 				token = RegExp.leftContext || '';
@@ -608,6 +608,11 @@
 			return nodes;			
 		},
 		
+		/**
+		 * Comparator function is used to sort elements in document order,
+		 * solution is adapted version of the code found at Google's doctype project:
+		 * http://code.google.com/p/doctype/wiki/ArticleNodeCompareDocumentOrder
+		 */
 		comparator = function(a, b) {
 			
 			if (a === b) {
