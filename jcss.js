@@ -536,35 +536,30 @@
 					}
 					return this.pseudo(nodes);
 				},
-				elements: function(context, depth) {
+				elements: function(context) {
 					var result = [];
-					depth = depth || 0;
-					if (isID && depth == 0) {
+					if (!relation) {
 						result = getNodes(context);
-					} else {
-						if (!relation) {
-							result = getNodes(context);
-						} else if (relation == '>') {
-							for (var i = 0, nodes = getNodes(context), node; node = nodes[i++];) {
-								if (node.parentNode === context) result.push(node);
-							}
-						} else if (relation == '+') {
-							for (var o = context.nextSibling; o; o = o.nextSibling) {
-								if (o.nodeType == 1) {
-								 	if (o.nodeName == name && this.atts(o)) {
-										result.push(o);
-									}
-									break;
+					} else if (relation == '>') {
+						for (var i = 0, nodes = getNodes(context), node; node = nodes[i++];) {
+							if (node.parentNode === context) result.push(node);
+						}
+					} else if (relation == '+') {
+						for (var o = context.nextSibling; o; o = o.nextSibling) {
+							if (o.nodeType == 1) {
+							 	if (o.nodeName == name && this.atts(o)) {
+									result.push(o);
 								}
+								break;
 							}
-						} else if (relation == '~') {
-							for (var o = context.nextSibling; o; o = o.nextSibling) {
-								if (o.nodeType == 1) {
-									if (o.nodeName == name && this.atts(o)) {
-										result.push(o);
-									}
-								}							
-							}
+						}
+					} else if (relation == '~') {
+						for (var o = context.nextSibling; o; o = o.nextSibling) {
+							if (o.nodeType == 1) {
+								if (o.nodeName == name && this.atts(o)) {
+									result.push(o);
+								}
+							}							
 						}
 					}
 					return result;
@@ -671,7 +666,7 @@
 					var temp = [], current = getTag(token), next;
 
 					for (var k = 0, parent; parent = contexts[k++];) {
-						Array.prototype.push.apply(temp, current.elements(parent, j - 1));
+						Array.prototype.push.apply(temp, current.elements(parent));
 					}
 					
 					if (temp.length > 1 && tokens.length > 1 && j < tokens.length) {
