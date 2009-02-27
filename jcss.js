@@ -406,9 +406,6 @@
 			if (isID) ID = token.replace(/\\/g, '') + temp.join('');
 			if (isClass) CLASS = token + temp.join('');
 			
-			/**
-			 * @TODO remove duplicated code
-			 */
 			function atts (el) {
 				var i = attributes.length;
 				if (i > 0) {
@@ -496,11 +493,7 @@
 					return list;
 				},
 				atts: function(el) {
-					var i = attributes.length;
-					if (i > 0) {
-						while (i--) { if (!attributes[i].call(el)) return false; }
-					}
-					return true;
+					return atts(el);
 				},
 				not: function(list) {
 					for (var i = 0, nodes = [], node; node = list[i++];) {
