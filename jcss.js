@@ -537,7 +537,7 @@
 					return this.pseudo(nodes);
 				},
 				elements: function(context, depth) {
-					var el, result = [];
+					var result = [];
 					depth = depth || 0;
 					if (isID && depth == 0) {
 						result = getNodes(context);
