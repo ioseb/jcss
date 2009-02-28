@@ -359,21 +359,21 @@
 		
 		function getTag(token) {
 	
-			var regex1	 = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	    //match whole token
-				regex2	 = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
-				regex3	 = /(\:[-\w]+)(?:\((.*?)\))?$/,					    //match pseudo classes at the end of the string
-				matches	 = regex1.exec(token);
+			var regex1   = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	    //match whole token
+                regex2   = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
+                regex3   = /(\:[-\w]+)(?:\((.*?)\))?$/,					    //match pseudo classes at the end of the string
+                matches  = regex1.exec(token);
 			
 			token = (matches[4] || '') + (matches[5] || ''); 
 			
 			var relation = matches[1] || '',
-				name 	 = (matches[2] || '*').toUpperCase(),
-				isID 	 = matches[3] == '#',
-				ID   	 = null,
-				isClass	 = matches[3] == '.',
-				CLASS	 = null,
-				filters	 = [],
-				pseudos	 = [];
+                name     = (matches[2] || '*').toUpperCase(),
+                isID     = matches[3] == '#',
+                ID       = null,
+                isClass  = matches[3] == '.',
+                CLASS    = null,
+                filters  = [],
+                pseudos  = [];
 			
 			while (matches = regex2.exec(token)) {
 				token = RegExp.leftContext || '';
@@ -406,11 +406,17 @@
 			if (isID) ID = token.replace(/\\/g, '') + temp.join('');
 			if (isClass) CLASS = token + temp.join('');
 			
-			function filter(el) {
+			if (relation == '>') {
+				filters.push(function(context) {
+					return this.parentNode === context;
+				});
+			}
+			
+			function filter(el, context) {
 				var i = filters.length;
 				if (i > 0) {
 					while (i--) {
-						if (!filters[i].call(el)) return false;
+						if (!filters[i].call(el, context)) return false;
 					}
 				}
 				return true;
@@ -419,6 +425,7 @@
 			var getNodes = function(context) {
 				
 				var el, nodes = [];
+				
 				if (isID) {
 					if (el = document.getElementById(ID)) {
 						if (document.all && el.attributes['id'].value != ID) {
@@ -430,7 +437,7 @@
 							}
 							el = found ? el : null;
 						}
-						if (el && (name == '*' || name == el.nodeName) && (context !== document && context !== el ? contains(context, el) : true)) {
+						if (el && (name == '*' || name == el.nodeName) && filter(el, context) && (context !== document && context !== el ? contains(context, el) : true)) {
 							nodes.push(el);
 						}
 					}
@@ -444,7 +451,7 @@
 								&& document.documentElement.getElementsByClassName) {
 						
 						for (i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '').toLowerCase()), node; node = items[i++];) {
-							if (name == '*' || node.nodeName == name && filter(node)) {
+							if (name == '*' || node.nodeName == name && filter(node, context)) {
 								nodes.push(node);							
 							}
 						}
@@ -460,14 +467,14 @@
 						for (var i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
 							if (all) {
 								if (isClass) {
-									if (node.className && filter(node)) {
+									if (node.className && filter(node, context)) {
 										nodes.push(node);
 									}
 								} else {
-									if (node.nodeType == 1 && filter(node)) nodes.push(node);
+									if (node.nodeType == 1 && filter(node, context)) nodes.push(node);
 								}
 							} else {
-								if (filter(node)) nodes.push(node);
+								if (filter(node, context)) nodes.push(node);
 							}
 						}
 						
@@ -528,12 +535,8 @@
 				},
 				elements: function(context) {
 					var result = [];
-					if (!relation) {
+					if (!relation || relation == '>') {
 						result = getNodes(context);
-					} else if (relation == '>') {
-						for (var i = 0, nodes = getNodes(context), node; node = nodes[i++];) {
-							if (node.parentNode === context) result.push(node);
-						}
 					} else if (relation == '+') {
 						for (var o = context.nextSibling; o; o = o.nextSibling) {
 							if (o.nodeType == 1) {
