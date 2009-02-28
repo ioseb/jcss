@@ -435,22 +435,19 @@
 									break;
 	 							}
 							}
-							el = found ? el : null;
+							if (found) return nodes;
 						}
-						if (el && (name == '*' || name == el.nodeName) && filter(el, context) && (context !== document && context !== el ? contains(context, el) : true)) {
+						if ((name == '*' || name == el.nodeName) && filter(el, context) && (context !== document && context !== el ? contains(context, el) : true)) {
 							nodes.push(el);
 						}
 					}
 				} else if (!relation || relation == '>') {
 					
-					/**
-					 * @TODO change complex condition and remove browser sniffing
-					 */
-					if (isClass && !window.opera && !/^\w+\.\w+$/.test(CLASS) && !/[^-\w\.\:\\\[\]]/.test(CLASS) && !/[A-Z]/.test(CLASS)
-					 		&& document.getElementsByClassName 
-								&& document.documentElement.getElementsByClassName) {
+					if (isClass && !window.opera && document.documentElement.getElementsByClassName) {
 						
-						for (i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '').toLowerCase()), node; node = items[i++];) {
+						CLASS = CLASS.replace(/(\w+)\.(\w+)/g, '$1 $2');
+						
+						for (i = 0, items = context.getElementsByClassName(CLASS.replace(/\\/g, '')), node; node = items[i++];) {
 							if (name == '*' || node.nodeName == name && filter(node, context)) {
 								nodes.push(node);							
 							}
