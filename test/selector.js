@@ -113,7 +113,7 @@ test("class", function() {
 	isSet( jCSS(".blog", document.getElementsByTagName("p")), q("mark", "simon"), "Finding elements with a context." );
 	isSet( jCSS(".blog", "p"), q("mark", "simon"), "Finding elements with a context." );
 	isSet( jCSS(".blog", jCSS("p")), q("mark", "simon"), "Finding elements with a context." );
-	isSet( jQuery("p .blog"), q("mark", "simon"), "Finding elements with a context." );
+	isSet( jCSS("p .blog"), q("mark", "simon"), "Finding elements with a context." );
 	
 	//t( "Class selector using UTF8", ".å°åŒ—TaÌibeÌŒi", ["utf8class1"] );
 	//t( "Class selector using UTF8", ".å°åŒ—", ["utf8class1","utf8class2"] );
