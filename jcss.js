@@ -521,18 +521,6 @@
 					}				
 					return nodes;
 				},
-				filter: function(list) {
-					for (var i = 0, nodes = [], node; node = list[i++];) {
-						if (name == '*' && (filter(node))) {
-							nodes.push(node);
-						} else if (node.nodeName == name && filter(node)) {
-							nodes.push(node);
-						} else if (node.nodeName == name) {
-							nodes.push(node);
-						}
-					}
-					return this.pseudo(nodes);
-				},
 				elements: function(context) {
 					var result = [];
 					if (!relation || relation == '>') {
