@@ -537,22 +537,14 @@
 					var result = [];
 					if (!relation || relation == '>') {
 						result = getNodes(context);
-					} else if (relation == '+') {
+					} else if (relation == '+' || relation == '~') {
 						for (var o = context.nextSibling; o; o = o.nextSibling) {
 							if (o.nodeType == 1) {
 							 	if (o.nodeName == name && filter(o)) {
 									result.push(o);
 								}
-								break;
+								if (relation == '+') break;
 							}
-						}
-					} else if (relation == '~') {
-						for (var o = context.nextSibling; o; o = o.nextSibling) {
-							if (o.nodeType == 1) {
-								if (o.nodeName == name && filter(o)) {
-									result.push(o);
-								}
-							}							
 						}
 					}
 					return result;
@@ -608,7 +600,7 @@
 				}
 				duplicates = false;
 			}		
-			return nodes;			
+			return nodes;
 		},
 		
 		/**
