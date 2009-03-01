@@ -45,13 +45,13 @@
 				}
 			}
 			return -1;
-		};
+		},
 		
-		function contains(a, b){
+		contains = function(a, b){
 			return a.contains ? a !== b && a.contains(b) : !!(a.compareDocumentPosition(b) & 16);
-		};
+		}, 
 		
-		var pseudo = function() {
+		pseudo = function() {
 			
 			var each = function(list, fn) {
 				for (var i = 0, nodes = [], node; node = list[i++];) {
@@ -98,7 +98,7 @@
 				 */
 				':nth-child': function(list, value) {
 					
-					function filter(arr, step, nodes) {
+					var filter = function(arr, step, nodes) {
 						var start = 0, temp = [], result = [], el;
 						while (el = arr[start]) {
 							for (var i = 0, len = nodes.length; i < len; i++) {
@@ -299,15 +299,15 @@
 				}
 			};
 			
-		}();
+		}(),
 		
-		var attfn = function() {
+		attfn = function() {
 			
 			var attName = function(att) {
 				return {'class': 'className', 'for': 'htmlFor'}[att] || att;
-			};
+			},
 			
-			var attVal = function(el, att) {
+			attVal = function(el, att) {
 				return el.getAttribute(att, 2) || el[attName(att)] || '';
 			};
 			
@@ -355,9 +355,9 @@
 				}
 			};
 			
-		}();
+		}(),
 		
-		function getTag(token) {
+		getTag = function(token) {
 	
 			var regex1   = /^(>|~|<|\+|)(\w+|\*)?(?:(#|\.)(.+))?(.*)/,	    //match whole token
                 regex2   = /(?:\[\w+(?:(?:(?:!|\*|\^|\$|~|\||)=.*))?\])+$/, //match attribute selectors at the end of the string
@@ -412,7 +412,7 @@
 				});
 			}
 			
-			function filter(el, context) {
+			var filter = function(el, context) {
 				var i = filters.length;
 				if (i > 0) {
 					while (i--) {
@@ -420,9 +420,9 @@
 					}
 				}
 				return true;
-			};
+			},
 			
-			var getNodes = function(context) {
+			getNodes = function(context) {
 				
 				var el, nodes = [];
 				
@@ -536,9 +536,9 @@
 				}
 			};
 			
-		};
+		},
 		
-		var getQuery = function(query) {
+		getQuery = function(query) {
 			
 			query = query.replace(new RegExp('&gt;', 'g'), '>')
 						 .replace(/[\'\"]/g, '')
