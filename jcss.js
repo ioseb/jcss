@@ -58,10 +58,10 @@
 					if (fn.call(node)) nodes.push(node);
 				}
 				return nodes;
-			};
+			},
 			
-			var input = function(list, type) {
-				return each(list, function() { return this.type === type; });
+			input = function(list, type) {
+				return each(list, function() { return this.type == type; });
 			};
 			
 			return {		
@@ -209,7 +209,7 @@
 				},
 				':checked': function(list, value) {
 					return each(list, function() { 
-						return this.checked === true; 
+						return this.checked == true; 
 					});
 				},
 				':empty': function(list, value) {
@@ -459,7 +459,7 @@
 							filters.push(attfn['~=']('class', CLASS));
 						}
 						
-						var all = name === '*';
+						var all = name == '*';
 						
 						for (var i = 0, items = context.getElementsByTagName(name), node; node = items[i++];) {
 							if (all) {
